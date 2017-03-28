@@ -1,6 +1,5 @@
 package discord.jar;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -30,8 +29,6 @@ public interface DiscordAPI
     User getUserById(String id);
 
     User getUserByUsername(String id);
-
-    VoiceGroupImpl getVoiceGroupById(String id);
 
     Group getGroupById(String id);
 

@@ -126,16 +126,6 @@ public class DiscordAPIImpl implements DiscordAPI
         return null;
     }
 
-
-    public VoiceGroupImpl getVoiceGroupById(String id)
-    {
-        // for (Server server : availableServers)
-        //     for (VoiceGroupImpl channel : server.getVoiceGroups())
-        //         if (channel.getId().equals(id))
-        //             return channel;
-        return null;
-    }
-
     public boolean isUserKnown(String id)
     {
         return getUserById(id) != null;

@@ -193,11 +193,7 @@ public class ReadyPoll implements Poll
                 JSONObject channel = channels.getJSONObject(ia);
 
                 if (!channel.getString("type").equals("text"))
-                {
-                    VoiceGroupImpl group = new VoiceGroupImpl(channel.getString("id"), channel.getString("name"),
-                            server, api);
-                    server.getVoiceGroups().add(group);
-                }
+                { }
                 else
                 {
                     GroupImpl group = new GroupImpl(channel.getString("id"), channel.getString("id"), server, api);

@@ -35,9 +35,6 @@ public class ServerImpl implements Server
     @Getter
     @Setter
     private List<Group> groups = new ArrayList<>();
-    @Getter
-    @Setter
-    private List<VoiceGroupImpl> voiceGroups = new ArrayList<>();
 
     private DiscordAPIImpl api;
 
