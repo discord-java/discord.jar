@@ -1,12 +1,13 @@
 package discord.jar;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-
-@Getter
-@AllArgsConstructor
-public class ChannelDeletedEvent
-{
+public class ChannelDeletedEvent {
     private final Group group;
+
+    public Group getGroup() {
+        return this.group;
+    }
+
+    public ChannelDeletedEvent(final Group group) {
+        this.group = group;
+    }
 }

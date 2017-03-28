@@ -1,41 +1,21 @@
 package discord.jar;
 
-import lombok.Getter;
-import lombok.Setter;
-
-
-public class UserImpl implements User, Talkable
-{
-    @Getter
-    @Setter
+public class UserImpl implements User, Talkable {
     private String username;
-    @Getter
     private String id;
-    @Getter
     private String cid;
-    @Getter
-    @Setter
     private String avatar;
-    @Getter
-    @Setter
     private String avatarId;
-    @Getter
-    @Setter
     private String game;
-    @Getter
-    @Setter
     private OnlineStatus onlineStatus;
     private DiscordAPIImpl api;
 
-    public UserImpl(String username, String id, String cid, DiscordAPIImpl api)
-    {
+    public UserImpl(String username, String id, String cid, DiscordAPIImpl api) {
         this.api = api;
         this.id = id;
         this.cid = cid;
         this.username = username;
-
-        if (!api.getUserGroups().containsKey(id))
-        {
+        if (!api.getUserGroups().containsKey(id)) {
             GroupImpl group = new GroupImpl(id, cid, null, api);
             group.setName(username);
             api.getUserGroups().put(id, group);
@@ -43,20 +23,65 @@ public class UserImpl implements User, Talkable
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return username;
     }
 
     @Override
-    public Group getGroup()
-    {
+    public Group getGroup() {
         return api.getUserGroups().get(id);
     }
 
     @Override
-    public boolean equals(Object a)
-    {
+    public boolean equals(Object a) {
         return ((a instanceof String) && ((a.equals(id)) || (a.equals(cid))));
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(final String username) {
+        this.username = username;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    public String getCid() {
+        return this.cid;
+    }
+
+    public String getAvatar() {
+        return this.avatar;
+    }
+
+    public void setAvatar(final String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatarId() {
+        return this.avatarId;
+    }
+
+    public void setAvatarId(final String avatarId) {
+        this.avatarId = avatarId;
+    }
+
+    public String getGame() {
+        return this.game;
+    }
+
+    public void setGame(final String game) {
+        this.game = game;
+    }
+
+    public OnlineStatus getOnlineStatus() {
+        return this.onlineStatus;
+    }
+
+    public void setOnlineStatus(final OnlineStatus onlineStatus) {
+        this.onlineStatus = onlineStatus;
     }
 }

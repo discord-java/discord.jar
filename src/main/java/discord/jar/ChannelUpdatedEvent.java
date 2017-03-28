@@ -1,12 +1,13 @@
 package discord.jar;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
-
-@Getter
-@AllArgsConstructor
-public class ChannelUpdatedEvent
-{
+public class ChannelUpdatedEvent {
     private final Group group;
+
+    public Group getGroup() {
+        return this.group;
+    }
+
+    public ChannelUpdatedEvent(final Group group) {
+        this.group = group;
+    }
 }
