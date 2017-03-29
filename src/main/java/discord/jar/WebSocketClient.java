@@ -29,7 +29,7 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient
 
     public WebSocketClient(DiscordAPIImpl api, String url)
     {
-        super(URI.create(url.replace("wss", "ws"))); //this api doesn't like wss
+        super(URI.create(url));
         this.api = api;
         readyPoll = new ReadyPoll(api);
         banPoll = new BanPoll(api);
