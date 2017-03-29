@@ -83,30 +83,19 @@ public class Test {
 }
 ```
 # Shut up and take my money! 
-### (Now using shaded jar due to compatibility issues with past builds)
-[Maven](http://itsghost.me/maven)
+```groovy
+repositories {
+  jcenter()
+  maven {
+    url  "https://jitpack.io"
+  }
+}
 
-Repository:
+dependencies {
+  compile "com.github.MinnDevelopment:discord.jar:VERSION"
+}
 ```
-<repository>
-  <id>xyz.gghost</id>
-  <url>http://gghost.xyz/maven/</url>
-</repository>
-```
-Dependency:
-```
-<dependency>
-  <groupId>xyz.gghost</groupId>
-  <artifactId>jdiscord</artifactId>
-  <version>1.3</version>
-  <scope>compile</scope>
-</dependency>
-```
-
-
 # Dependencies
-- [Apache Commons Lang 3](https://commons.apache.org/proper/commons-lang/)
-- [lombok](https://projectlombok.org/)
+- [Apache Commons](https://commons.apache.org/)
 - [JSON](http://www.json.org/java/)
 - [Java-Websocket](https://github.com/tootallnate/java-websocket)
-- http://itsghost.me/commons-codec-1.10.jar
