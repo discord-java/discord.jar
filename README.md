@@ -52,7 +52,7 @@ api.login();
 ```
 
 # Using the event manager
-In order to listen for an event, create a class that implements EventListener, and register it by calling `api.getEventManager().registerListener(new YourListener(api));`. All events can be found in the `me.itsghost.jdiscord.events` package as well as the [Events](#events) section. 
+In order to listen for an event, create a class that implements EventListener, and register it by calling `api.getEventManager().registerListener(new YourListener(api));`. All events can be found in the `discord.jar` package as well as the [Events](#events) section. 
 
 ```java
 public class ExampleListener implements EventListener {
