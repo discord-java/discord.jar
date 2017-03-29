@@ -2,7 +2,7 @@ package discord.jar;
 
 public enum OnlineStatus
 {
-    ONLINE, AWAY, OFFLINE, UNKNOWN;
+    ONLINE, AWAY, OFFLINE, DND, UNKNOWN;
 
     public static OnlineStatus fromName(String name)
     {
@@ -14,6 +14,8 @@ public enum OnlineStatus
                 return AWAY;
             case "offline":
                 return OFFLINE;
+            case "dnd":
+                return DND;
             default:
                 return UNKNOWN;
         }
