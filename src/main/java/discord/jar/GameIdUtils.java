@@ -4,16 +4,13 @@ package discord.jar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class GameIdUtils
-{
+public class GameIdUtils {
 
     private static String GAMEARRAY;
 
-    public static String getGameFromId(int id)
-    {
+    public static String getGameFromId(int id) {
         JSONArray array = new JSONArray(getGameArray());
-        for (int i = 0; i < array.length(); i++)
-        {
+        for (int i = 0; i < array.length(); i++) {
             JSONObject item = array.getJSONObject(i);
 
             if (item.getInt("id") == id)
@@ -22,8 +19,7 @@ public class GameIdUtils
         return "Unknown game";
     }
 
-    private static String getGameArray()
-    {
+    private static String getGameArray() {
         if (GAMEARRAY != null)
             return GAMEARRAY;
 

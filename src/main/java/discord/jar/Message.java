@@ -1,8 +1,7 @@
 package discord.jar;
 
 
-public interface Message
-{
+public interface Message {
     String getMessage();
 
     void setMessage(String message);

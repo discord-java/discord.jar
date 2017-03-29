@@ -3,8 +3,7 @@ package discord.jar;
 import java.util.List;
 import java.util.Map;
 
-public interface DiscordAPI
-{
+public interface DiscordAPI {
     DiscordAPI login() throws NoLoginDetailsException, BadUsernamePasswordException, DiscordFailedToConnectException;
 
     DiscordAPI login(String email, String password) throws BadUsernamePasswordException,

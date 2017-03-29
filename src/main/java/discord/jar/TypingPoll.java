@@ -3,18 +3,15 @@ package discord.jar;
 
 import org.json.JSONObject;
 
-public class TypingPoll implements Poll
-{
+public class TypingPoll implements Poll {
     private DiscordAPIImpl api;
 
-    public TypingPoll(DiscordAPIImpl api)
-    {
+    public TypingPoll(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
         String id = content.getString("channel_id");
         String authorId = content.getString("user_id");
 

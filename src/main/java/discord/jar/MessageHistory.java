@@ -1,6 +1,5 @@
 package discord.jar;
 
-public class MessageHistory
-{
+public class MessageHistory {
 
 }

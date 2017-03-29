@@ -3,20 +3,16 @@ package discord.jar;
 
 import org.json.JSONObject;
 
-public class NewContactOrGroupPoll implements Poll
-{
+public class NewContactOrGroupPoll implements Poll {
     private DiscordAPIImpl api;
 
-    public NewContactOrGroupPoll(DiscordAPIImpl api)
-    {
+    public NewContactOrGroupPoll(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
-        if (content.getBoolean("is_private"))
-        {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
+        if (content.getBoolean("is_private")) {
             String cid = content.getString("id");
 
             JSONObject recp = content.getJSONObject("recipient");
@@ -31,9 +27,7 @@ public class NewContactOrGroupPoll implements Poll
             userImpl.setAvatarId(avatarId);
 
             api.updateContact(userImpl);
-        }
-        else
-        {
+        } else {
             GroupImpl group = new GroupImpl(content.getString("id"), content.getString("id"), server, api);
             group.setName(content.getString("name"));
             server.getGroups().add(group);

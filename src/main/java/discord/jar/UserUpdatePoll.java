@@ -4,18 +4,15 @@ package discord.jar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class UserUpdatePoll implements Poll
-{
+public class UserUpdatePoll implements Poll {
     private DiscordAPIImpl api;
 
-    public UserUpdatePoll(DiscordAPIImpl api)
-    {
+    public UserUpdatePoll(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
         JSONObject user = content.getJSONObject("user");
         JSONArray rolesArray = content.getJSONArray("roles");
         GroupUser gUser = server.getGroupUserById(user.getString("id"));
@@ -26,8 +23,7 @@ public class UserUpdatePoll implements Poll
                 "/" + (user.isNull("avatar") ? "" : user.getString("avatar")) + ".jpg");
 
 
-        for (int i = 0; i < rolesArray.length(); i++)
-        {
+        for (int i = 0; i < rolesArray.length(); i++) {
             JSONObject roleObj = rolesArray.getJSONObject(i);
             gUser.setRole(roleObj.getString("name"));
         }

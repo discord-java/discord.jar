@@ -3,27 +3,22 @@ package discord.jar;
 
 import org.json.JSONObject;
 
-public class StatusPoll implements Poll
-{
+public class StatusPoll implements Poll {
     private DiscordAPIImpl api;
 
-    public StatusPoll(DiscordAPIImpl api)
-    {
+    public StatusPoll(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
-        try
-        {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
+        try {
             String id = content.getString("guild_id");
             String authorId = content.getJSONObject("user").getString("id");
 
             Group a = api.getGroupById(id);
 
-            if (a == null)
-            {
+            if (a == null) {
                 api.log("I think I came online or offline... ignoring.");
                 return;
             }
@@ -41,9 +36,7 @@ public class StatusPoll implements Poll
             UserOnlineStatusChangedEvent event = new UserOnlineStatusChangedEvent(user, status, game);
             api.getEventManager().executeEvent(event);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             api.log("Failed to process message:\n >" + content);
             e.printStackTrace();
         }

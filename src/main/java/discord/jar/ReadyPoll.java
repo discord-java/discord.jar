@@ -8,19 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ReadyPoll implements Poll
-{
+public class ReadyPoll implements Poll {
     private Thread thread;
     private DiscordAPIImpl api;
 
-    public ReadyPoll(DiscordAPIImpl api)
-    {
+    public ReadyPoll(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
         if (api.isLoaded())
             return; //we reconnected
 
@@ -38,16 +35,12 @@ public class ReadyPoll implements Poll
 
         thread = new Thread(() ->
         {
-            while (!api.getRequestManager().getSocketClient().getConnection().isClosed())
-            {
+            while (!api.getRequestManager().getSocketClient().getConnection().isClosed()) {
                 api.getRequestManager().getSocketClient().send(new JSONObject().put("op", 1).put("d", System
                         .currentTimeMillis()).toString());
-                try
-                {
+                try {
                     Thread.sleep(content.getLong("heartbeat_interval"));
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     api.stop();
                 }
             }
@@ -58,17 +51,12 @@ public class ReadyPoll implements Poll
         setupServers(content);
         setupContacts(content);
 
-        new Thread()
-        {
-            public void run()
-            {
-                try
-                {
+        new Thread() {
+            public void run() {
+                try {
                     Thread.sleep(500);
                     api.getEventManager().executeEvent(new APILoadedEvent());
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                 }
             }
         }.start();
@@ -76,11 +64,9 @@ public class ReadyPoll implements Poll
         api.setLoaded(true);
     }
 
-    public void setupContacts(JSONObject key)
-    {
+    public void setupContacts(JSONObject key) {
         JSONArray array = key.getJSONArray("private_channels");
-        for (int i = 0; i < array.length(); i++)
-        {
+        for (int i = 0; i < array.length(); i++) {
             JSONObject item = array.getJSONObject(i);
             JSONObject contact = item.getJSONObject("recipient");
 
@@ -98,13 +84,11 @@ public class ReadyPoll implements Poll
         }
     }
 
-    public List<GroupUser> getGroupUsersFromJson(JSONObject obj, Map<String, String> roles)
-    {
+    public List<GroupUser> getGroupUsersFromJson(JSONObject obj, Map<String, String> roles) {
         JSONArray members = obj.getJSONArray("members");
         List<GroupUser> guList = new ArrayList<>();
 
-        for (int i = 0; i < members.length(); i++)
-        {
+        for (int i = 0; i < members.length(); i++) {
             JSONObject item = members.getJSONObject(i);
             JSONObject user = item.getJSONObject("user");
 
@@ -117,12 +101,9 @@ public class ReadyPoll implements Poll
             String role = "User";
             UserImpl userImpl;
 
-            if (api.isUserKnown(id))
-            {
+            if (api.isUserKnown(id)) {
                 userImpl = (UserImpl) api.getUserById(id);
-            }
-            else
-            {
+            } else {
                 userImpl = new UserImpl(username, id, id, api);
                 userImpl.setAvatar(user.isNull("avatar") ? "" : "https://cdn.discordapp.com/avatars/" + id + "/" +
                         avatarId + ".jpg");
@@ -136,16 +117,12 @@ public class ReadyPoll implements Poll
         return guList;
     }
 
-    public List<GroupUser> updateOnlineStatus(List<GroupUser> users, JSONArray presences)
-    {
-        for (int i = 0; i < presences.length(); i++)
-        {
+    public List<GroupUser> updateOnlineStatus(List<GroupUser> users, JSONArray presences) {
+        for (int i = 0; i < presences.length(); i++) {
             JSONObject item = presences.getJSONObject(i);
-            for (GroupUser gUser : users)
-            {
+            for (GroupUser gUser : users) {
                 User user = gUser.getUser();
-                if (user.equals(item.getJSONObject("user").getString("id")))
-                {
+                if (user.equals(item.getJSONObject("user").getString("id"))) {
                     String game = item.isNull("game_id") ? "ready to play" : GameIdUtils.getGameFromId(item.getInt
                             ("game_id"));
                     OnlineStatus status = OnlineStatus.fromName(item.getString("status"));
@@ -157,22 +134,18 @@ public class ReadyPoll implements Poll
         return users;
     }
 
-    public HashMap<String, String> getRoles(JSONArray rolesArray)
-    {
+    public HashMap<String, String> getRoles(JSONArray rolesArray) {
         HashMap<String, String> roles = new HashMap<>();
-        for (int i = 0; i < rolesArray.length(); i++)
-        {
+        for (int i = 0; i < rolesArray.length(); i++) {
             JSONObject roleObj = rolesArray.getJSONObject(i);
             roles.put(roleObj.getString("id"), roleObj.getString("name"));
         }
         return roles;
     }
 
-    public void setupServers(JSONObject key)
-    {
+    public void setupServers(JSONObject key) {
         JSONArray guilds = key.getJSONArray("guilds");
-        for (int i = 0; i < guilds.length(); i++)
-        {
+        for (int i = 0; i < guilds.length(); i++) {
             JSONObject item = guilds.getJSONObject(i);
 
             ServerImpl server = new ServerImpl(item.getString("id"), api);
@@ -188,14 +161,11 @@ public class ReadyPoll implements Poll
             server.getConnectedClients().addAll(users);
 
             JSONArray channels = item.getJSONArray("channels");
-            for (int ia = 0; ia < channels.length(); ia++)
-            {
+            for (int ia = 0; ia < channels.length(); ia++) {
                 JSONObject channel = channels.getJSONObject(ia);
 
-                if (!channel.getString("type").equals("text"))
-                { }
-                else
-                {
+                if (!channel.getString("type").equals("text")) {
+                } else {
                     GroupImpl group = new GroupImpl(channel.getString("id"), channel.getString("id"), server, api);
                     group.setName(channel.getString("name"));
                     server.getGroups().add(group);
@@ -205,8 +175,7 @@ public class ReadyPoll implements Poll
         }
     }
 
-    public void stop()
-    {
+    public void stop() {
         if (thread != null)
             thread.stop();
     }

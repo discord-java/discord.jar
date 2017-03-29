@@ -6,18 +6,15 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class GuildAdd implements Poll
-{
+public class GuildAdd implements Poll {
     private DiscordAPIImpl api;
 
-    public GuildAdd(DiscordAPIImpl api)
-    {
+    public GuildAdd(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
         ReadyPoll poll = new ReadyPoll(api);
         ServerImpl serverI = new ServerImpl(content.getString("id"), api);
 
@@ -33,8 +30,7 @@ public class GuildAdd implements Poll
         serverI.getConnectedClients().addAll(users);
 
         JSONArray channels = content.getJSONArray("channels");
-        for (int ia = 0; ia < channels.length(); ia++)
-        {
+        for (int ia = 0; ia < channels.length(); ia++) {
             JSONObject channel = channels.getJSONObject(ia);
 
             if (!channel.getString("type").equals("text"))

@@ -1,8 +1,7 @@
 package discord.jar;
 
 
-public interface Group
-{
+public interface Group {
     String getId();
 
     String getName();

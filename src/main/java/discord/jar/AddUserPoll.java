@@ -2,18 +2,15 @@ package discord.jar;
 
 import org.json.JSONObject;
 
-public class AddUserPoll implements Poll
-{
+public class AddUserPoll implements Poll {
     private DiscordAPIImpl api;
 
-    public AddUserPoll(DiscordAPIImpl api)
-    {
+    public AddUserPoll(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
         JSONObject user = content.getJSONObject("user");
 
         UserImpl userImpl = new UserImpl(user.getString("username"), user.getString("id"), user.getString("id"), api);

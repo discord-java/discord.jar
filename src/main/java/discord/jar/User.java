@@ -1,7 +1,6 @@
 package discord.jar;
 
-public interface User
-{
+public interface User {
     Group getGroup();
 
     String getAvatar();

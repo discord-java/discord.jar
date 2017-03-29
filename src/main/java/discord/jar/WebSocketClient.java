@@ -6,8 +6,7 @@ import org.json.JSONObject;
 
 import java.net.URI;
 
-public class WebSocketClient extends org.java_websocket.client.WebSocketClient
-{
+public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
     public boolean loaded = false;
     protected Thread thread;
     private DiscordAPIImpl api;
@@ -27,8 +26,7 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient
     private Poll userUpdatePoll;
     private Poll deletePoll;
 
-    public WebSocketClient(DiscordAPIImpl api, String url)
-    {
+    public WebSocketClient(DiscordAPIImpl api, String url) {
         super(URI.create(url));
         this.api = api;
         readyPoll = new ReadyPoll(api);
@@ -49,45 +47,34 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient
     }
 
     @Override
-    public void onOpen(ServerHandshake handshakeData)
-    {
+    public void onOpen(ServerHandshake handshakeData) {
         loaded = true;
         api.log("Logged in and loaded!");
     }
 
     @Override
-    public void onClose(int code, String reason, boolean remote)
-    {
-        if ((code == 1000) && (server != null))
-        {
+    public void onClose(int code, String reason, boolean remote) {
+        if ((code == 1000) && (server != null)) {
             api.log("Your data is on a different server");
             api.log("This error is deprecated... if you're seening this, report it.");
         }
-        if (code == 4001)
-        {
+        if (code == 4001) {
             System.out.println("\n");
             api.log("Uh... Some other client sent invalid data and timed everyone out!");
-            try
-            {
+            try {
                 api.getLoginTokens().process(api);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 api.log("Failed to reconnect: " + e.getCause());
                 api.stop();
-            }
-            finally
-            {
+            } finally {
                 System.out.println("\n");
             }
         }
     }
 
     @Override
-    public void onMessage(String message)
-    {
-        try
-        {
+    public void onMessage(String message) {
+        try {
             JSONObject obj = new JSONObject(message);
             if (obj.getInt("op") == 7)
                 return;
@@ -97,8 +84,7 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient
             Server a = key.isNull("guild_id") ? null : api.getServerById(key.getString("guild_id"));
             Server server = key.isNull("guild_id") ? null : (a != null ? a : api.getGroupById(key.getString
                     ("guild_id")).getServer());
-            switch (type)
-            {
+            switch (type) {
                 case "READY":
                     readyPoll.process(key, obj, server);
                     api.log("Successfully loaded user data!");
@@ -153,30 +139,23 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient
                     api.log("Unknown type " + type + "\n >" + obj);
                     break;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public void onError(Exception ex)
-    {
+    public void onError(Exception ex) {
         System.err.println("Internal client error!");
         api.log("Attempting go log in (again?)!");
         api.stop();
-        try
-        {
+        try {
             api.login();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
         }
     }
 
-    public void stop()
-    {
+    public void stop() {
         this.close();
         ((ReadyPoll) readyPoll).stop();
     }

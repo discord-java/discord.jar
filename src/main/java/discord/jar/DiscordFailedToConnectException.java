@@ -1,6 +1,5 @@
 package discord.jar;
 
-public class DiscordFailedToConnectException extends Exception
-{
+public class DiscordFailedToConnectException extends Exception {
 
 }

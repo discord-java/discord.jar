@@ -41,7 +41,8 @@ public class DiscordAPIImpl implements DiscordAPI {
     }
 
     public DiscordAPIImpl login() throws NoLoginDetailsException, BadUsernamePasswordException, DiscordFailedToConnectException {
-        if ((loginTokens.getUsername() == null) || (loginTokens.getPassword() == null)) throw new NoLoginDetailsException();
+        if ((loginTokens.getUsername() == null) || (loginTokens.getPassword() == null))
+            throw new NoLoginDetailsException();
         loginTokens.process(this);
         return this;
     }
@@ -52,7 +53,8 @@ public class DiscordAPIImpl implements DiscordAPI {
 
     public Group getGroupById(String id) {
         for (User channel : availableDms) if (channel.getId().equals(id)) return channel.getGroup();
-        for (Server server : availableServers) for (Group channel : server.getGroups()) if (channel.getId().equals(id)) return channel;
+        for (Server server : availableServers)
+            for (Group channel : server.getGroups()) if (channel.getId().equals(id)) return channel;
         return null;
     }
 

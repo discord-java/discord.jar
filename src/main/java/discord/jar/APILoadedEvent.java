@@ -1,6 +1,5 @@
 package discord.jar;
 
-public class APILoadedEvent
-{
+public class APILoadedEvent {
 
 }

@@ -65,7 +65,8 @@ public class ServerImpl implements Server {
 
     public void updateUser(GroupUser user) {
         ArrayList<GroupUser> users = new ArrayList<>();
-        for (GroupUser userA : connectedClients) if (userA.getUser().getId().equals(user.getUser().getId())) users.add(userA);
+        for (GroupUser userA : connectedClients)
+            if (userA.getUser().getId().equals(user.getUser().getId())) users.add(userA);
         connectedClients.removeAll(users);
         connectedClients.add(user);
     }

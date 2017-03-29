@@ -3,36 +3,30 @@ package discord.jar;
 
 import org.json.JSONArray;
 
-public class MessageBuilder
-{
+public class MessageBuilder {
 
     private StringBuilder sb = new StringBuilder();
     private JSONArray mentions = new JSONArray();
 
-    public MessageBuilder addString(String string)
-    {
+    public MessageBuilder addString(String string) {
         sb.append(string);
         return this;
     }
 
-    public MessageBuilder addObject(Object obj)
-    {
+    public MessageBuilder addObject(Object obj) {
         sb.append(obj);
         return this;
     }
 
-    public MessageBuilder addUserTag(GroupUser user, Group server)
-    {
+    public MessageBuilder addUserTag(GroupUser user, Group server) {
         return addUserTag(user.getUser().getUsername(), server);
     }
 
-    public MessageBuilder addUserTag(User user, Group server)
-    {
+    public MessageBuilder addUserTag(User user, Group server) {
         return addUserTag(user.getUsername(), server);
     }
 
-    public MessageBuilder addUserTag(String username, Group server)
-    {
+    public MessageBuilder addUserTag(String username, Group server) {
         addString("@" + username);
 
         GroupUser gp = server.getServer().getGroupUserByUsername(username);
@@ -45,8 +39,7 @@ public class MessageBuilder
         return this;
     }
 
-    public Message build()
-    {
+    public Message build() {
         MessageImpl message = new MessageImpl(sb.toString());
         message.setMentions(mentions);
         return message;

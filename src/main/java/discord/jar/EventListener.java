@@ -1,6 +1,5 @@
 package discord.jar;
 
-public interface EventListener
-{
+public interface EventListener {
 
 }

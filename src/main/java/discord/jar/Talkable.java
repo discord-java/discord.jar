@@ -1,5 +1,4 @@
 package discord.jar;
 
-public interface Talkable
-{
+public interface Talkable {
 }

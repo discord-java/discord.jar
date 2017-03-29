@@ -3,8 +3,7 @@ package discord.jar;
 
 import java.util.List;
 
-public interface Server
-{
+public interface Server {
     String getId();
 
     String getName();

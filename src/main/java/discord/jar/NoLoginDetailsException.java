@@ -1,6 +1,5 @@
 package discord.jar;
 
-public class NoLoginDetailsException extends Exception
-{
+public class NoLoginDetailsException extends Exception {
 
 }

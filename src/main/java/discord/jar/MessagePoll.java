@@ -4,20 +4,16 @@ package discord.jar;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONObject;
 
-public class MessagePoll implements Poll
-{
+public class MessagePoll implements Poll {
     private DiscordAPIImpl api;
 
-    public MessagePoll(DiscordAPIImpl api)
-    {
+    public MessagePoll(DiscordAPIImpl api) {
         this.api = api;
     }
 
     @Override
-    public void process(JSONObject content, JSONObject rawRequest, Server server)
-    {
-        try
-        {
+    public void process(JSONObject content, JSONObject rawRequest, Server server) {
+        try {
             String id = content.getString("channel_id");
             String authorId = content.getJSONObject("author").getString("id");
 
@@ -40,9 +36,7 @@ public class MessagePoll implements Poll
                     .getServer().getGroupUserById(authorId);
 
             api.getEventManager().executeEvent(new UserChatEvent(group, gUser, msg));
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             api.log("Failed to process message:\n >" + content);
         }
     }

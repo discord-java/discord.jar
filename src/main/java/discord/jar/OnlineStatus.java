@@ -1,13 +1,10 @@
 package discord.jar;
 
-public enum OnlineStatus
-{
+public enum OnlineStatus {
     ONLINE, AWAY, OFFLINE, DND, UNKNOWN;
 
-    public static OnlineStatus fromName(String name)
-    {
-        switch (name.toLowerCase())
-        {
+    public static OnlineStatus fromName(String name) {
+        switch (name.toLowerCase()) {
             case "online":
                 return ONLINE;
             case "idle":
