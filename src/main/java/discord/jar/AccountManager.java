@@ -3,8 +3,7 @@ package discord.jar;
 import java.io.IOException;
 import java.io.InputStream;
 
-public interface AccountManager
-{
+public interface AccountManager {
     void setOnlineStatus(boolean online);
 
     void setDisplayName(String displayName);
