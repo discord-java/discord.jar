@@ -1,12 +1,8 @@
 package discord.jar;
 
+import java.util.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ReadyPoll implements Poll {
     private Thread thread;
@@ -25,7 +21,6 @@ public class ReadyPoll implements Poll {
         JSONObject userDataJson = content.getJSONObject("user");
 
         data.setUsername(userDataJson.getString("username"));
-        data.setEmail(userDataJson.getString("email"));
         data.setId(userDataJson.getString("id"));
         data.setAvatar("https://cdn.discordapp.com/avatars/" + data.getId() + "/" + (userDataJson.isNull("avatar") ?
                 "" : userDataJson.getString("avatar")) + ".jpg");
@@ -36,13 +31,12 @@ public class ReadyPoll implements Poll {
         thread = new Thread(() ->
         {
             while (!api.getRequestManager().getSocketClient().getConnection().isClosed()) {
+            	System.out.println("sending heartbeat");
                 api.getRequestManager().getSocketClient().send(new JSONObject().put("op", 1).put("d", System
                         .currentTimeMillis()).toString());
                 try {
                     Thread.sleep(content.getLong("heartbeat_interval"));
-                } catch (Exception e) {
-                    api.stop();
-                }
+                } catch (InterruptedException e) {}
             }
         });
 
@@ -60,8 +54,6 @@ public class ReadyPoll implements Poll {
                 }
             }
         }.start();
-
-        api.setLoaded(true);
     }
 
     public void setupContacts(JSONObject key) {
@@ -148,35 +140,12 @@ public class ReadyPoll implements Poll {
         for (int i = 0; i < guilds.length(); i++) {
             JSONObject item = guilds.getJSONObject(i);
 
-            ServerImpl server = new ServerImpl(item.getString("id"), api);
-            server.setName(item.getString("name"));
-            server.setLocation(item.getString("region"));
-            server.setCreatorId(item.getString("owner_id"));
-            server.setAvatar(item.isNull("icon") ? "" : "https://cdn.discordapp.com/icons/" + server.getId() + "/" +
-                    item.getString("icon") + ".jpg");
-
-            List<GroupUser> users = getGroupUsersFromJson(item, getRoles(item.getJSONArray("roles")));
-            users = updateOnlineStatus(users, item.getJSONArray("presences"));
-
-            server.getConnectedClients().addAll(users);
-
-            JSONArray channels = item.getJSONArray("channels");
-            for (int ia = 0; ia < channels.length(); ia++) {
-                JSONObject channel = channels.getJSONObject(ia);
-
-                if (!channel.getString("type").equals("text")) {
-                } else {
-                    GroupImpl group = new GroupImpl(channel.getString("id"), channel.getString("id"), server, api);
-                    group.setName(channel.getString("name"));
-                    server.getGroups().add(group);
-                }
-            }
-            api.getAvailableServers().add(server);
+            api.getUnavailableServers().add(item.getString("id"));
         }
     }
 
     public void stop() {
         if (thread != null)
-            thread.stop();
+            thread.interrupt();
     }
 }

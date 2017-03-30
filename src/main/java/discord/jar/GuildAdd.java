@@ -43,6 +43,13 @@ public class GuildAdd implements Poll {
 
         api.getAvailableServers().add(serverI);
 
-        api.getEventManager().executeEvent(new AddedToServer(serverI));
+        if (api.getUnavailableServers().remove(serverI.getId())) {
+			if (api.getUnavailableServers().isEmpty() && !api.hasSentReady()) {
+		        api.setLoaded();
+			}
+		} else {
+	        api.getEventManager().executeEvent(new AddedToServer(serverI));
+		}
+        
     }
 }

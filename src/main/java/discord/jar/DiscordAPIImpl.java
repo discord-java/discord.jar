@@ -1,9 +1,6 @@
 package discord.jar;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DiscordAPIImpl implements DiscordAPI {
     private Login loginTokens = new Login();
@@ -20,17 +17,30 @@ public class DiscordAPIImpl implements DiscordAPI {
     private AccountManager accountManager = new AccountManagerImpl(this);
     private final Long startedTime = System.currentTimeMillis();
 
-    public DiscordAPIImpl(String email, String password) {
-        loginTokens.setUsername(email);
-        loginTokens.setPassword(password);
+    private final List<String> unavailableServers = Collections.synchronizedList(new ArrayList<>());
+	private boolean sendReady;
+
+	public void sendReady() {
+		this.sendReady = true;
+	}
+
+	public boolean hasSentReady() {
+		return sendReady;
+	}
+
+	public List<String> getUnavailableServers() {
+		return unavailableServers;
+	}
+
+	public DiscordAPIImpl(String token) {
+        loginTokens.setToken(token);
     }
 
     public DiscordAPIImpl() {
     }
 
-    public DiscordAPIImpl login(String email, String password) throws BadUsernamePasswordException, DiscordFailedToConnectException {
-        loginTokens.setUsername(email);
-        loginTokens.setPassword(password);
+    public DiscordAPIImpl login(String token) throws BadUsernamePasswordException, DiscordFailedToConnectException {
+        loginTokens.setToken(token);
         try {
             login();
         } catch (NoLoginDetailsException e) {
@@ -41,7 +51,7 @@ public class DiscordAPIImpl implements DiscordAPI {
     }
 
     public DiscordAPIImpl login() throws NoLoginDetailsException, BadUsernamePasswordException, DiscordFailedToConnectException {
-        if ((loginTokens.getUsername() == null) || (loginTokens.getPassword() == null))
+        if (loginTokens.getToken() == null)
             throw new NoLoginDetailsException();
         loginTokens.process(this);
         return this;
@@ -159,8 +169,9 @@ public class DiscordAPIImpl implements DiscordAPI {
         return this.loaded;
     }
 
-    public void setLoaded(final boolean loaded) {
-        this.loaded = loaded;
+    public void setLoaded() {
+        this.loaded = true;
+        getEventManager().executeEvent(new LoadedEvent(this));
     }
 
     public String getAs() {
@@ -182,4 +193,11 @@ public class DiscordAPIImpl implements DiscordAPI {
     public Long getStartedTime() {
         return this.startedTime;
     }
+
+	public void clear() {
+		availableDms.clear();
+		availableServers.clear();
+		availableServers.clear();
+		userGroups.clear();
+	}
 }

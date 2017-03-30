@@ -71,13 +71,9 @@ public class AccountManagerImpl implements AccountManager {
         updateEdits();
     }
 
-    private String getPassword() {
-        return discord.getLoginTokens().getPassword();
-    }
 
     private void updateLocalVars() {
         username = discord.getSelfInfo().getUsername();
-        password = discord.getLoginTokens().getPassword();
         email = discord.getSelfInfo().getEmail();
         avatar = discord.getSelfInfo().getAvatarId();
         newpass = null;
@@ -91,7 +87,6 @@ public class AccountManagerImpl implements AccountManager {
         pb.makeRequest();
 
         discord.getSelfInfo().setUsername(username);
-        discord.getLoginTokens().setPassword(newpass == null ? password : newpass);
         discord.getSelfInfo().setEmail(email);
     }
 

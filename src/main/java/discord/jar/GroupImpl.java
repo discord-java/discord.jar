@@ -50,7 +50,7 @@ public class GroupImpl implements Group, Talkable {
         message.setId(String.valueOf(System.currentTimeMillis()));
         PacketBuilder pb = new PacketBuilder(api);
         pb.setType(RequestType.POST);
-        pb.setData(new JSONObject().put("content", message.getMessage()).put("mentions", message.getMentions()).put("nonce", message.getId()).put("tts", false).toString());
+        pb.setData(new JSONObject().put("content", message.getMessage()).put("tts", false).toString());
         pb.setUrl("https://discordapp.com/api/channels/" + id + "/messages");
         String a = pb.makeRequest();
         if (a != null) return new MessageImpl(message.getMessage(), new JSONObject(a).getString("id"), id, api);

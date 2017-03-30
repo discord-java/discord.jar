@@ -2,18 +2,20 @@ package discord.jar;
 
 public class DiscordBuilder {
 
-    private String email;
-    private String password;
+    private String token;
 
-    public DiscordBuilder(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public DiscordBuilder(String token) {
+        this.token = token;
     }
 
     public DiscordBuilder() {
     }
 
-    public DiscordAPI build() {
-        return new DiscordAPIImpl(email, password);
+    public void setToken(String token) {
+		this.token = token;
+	}
+
+	public DiscordAPI build() {
+        return new DiscordAPIImpl(token);
     }
 }

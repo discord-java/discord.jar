@@ -6,7 +6,7 @@ import java.util.Map;
 public interface DiscordAPI {
     DiscordAPI login() throws NoLoginDetailsException, BadUsernamePasswordException, DiscordFailedToConnectException;
 
-    DiscordAPI login(String email, String password) throws BadUsernamePasswordException,
+    DiscordAPI login(String token) throws BadUsernamePasswordException,
             DiscordFailedToConnectException;
 
     void stop();
