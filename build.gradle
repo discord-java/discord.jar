@@ -21,6 +21,17 @@ dependencies {
     }
 }
 
+project(':example') {
+	apply plugin: 'java'
+	apply plugin: 'application'
+    
+    repositories {
+        jcenter()
+    }
+    
+    dependencies {
+    	compile rootProject
+    }
 }
 
 task wrapper(type: Wrapper) {

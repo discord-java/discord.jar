@@ -1,1 +1,3 @@
-rootProject.name="discord.jar"
+rootProject.name= 'discord.jar'
+
+include 'example'
