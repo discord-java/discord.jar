@@ -7,7 +7,7 @@ public class Main implements EventListener {
 
 	public Main() throws NoLoginDetailsException, BadUsernamePasswordException, DiscordFailedToConnectException {
 
-		DiscordAPI api = new DiscordBuilder("TOKEN").build();
+		DiscordAPI api = new DiscordBuilder("Mjk2NjczMTQwMTExODM1MTM2.C76oxA.R19q1bjQbYmN3jqIH4Hti1O0tvk").build();
 
 		api.getEventManager().registerListener(this);
 
@@ -20,7 +20,7 @@ public class Main implements EventListener {
 	}
 
 	public void on(LoadedEvent event) {
-		System.out.println("Bot successfully loaded!\n It's connected to the following servers: " + event.getApi().getAvailableServers().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
+		System.out.println("Bot successfully loaded!\nIt's connected to the following servers: " + event.getApi().getAvailableServers().stream().map(s -> s.getName()).collect(Collectors.joining(", ")));
 	}
 
 	public void on(UserChatEvent event) {

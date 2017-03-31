@@ -20,6 +20,8 @@ public interface DiscordAPI {
     boolean isAllowLogMessages();
 
     boolean isLoaded();
+    
+    boolean isStopped();
 
     Boolean joinInviteId(String id);
 

@@ -17,9 +17,7 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
     public static final int DISCORD_GATEWAY_VERSION = 6;
     
     public boolean loaded = false;
-    protected Thread thread;
     private DiscordAPIImpl api;
-    private String server;
     private Poll readyPoll;
     private Poll banPoll;
     private Poll addUserPoll;
@@ -100,12 +98,12 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
 		} catch (DataFormatException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-    }
-    
+	}
+
 	@Override
 	public void onClose(int code, String reason, boolean remote) {
 		api.log("Disconnected... :(");
-		if (code >= 4000) {
+		if (code != 4004 && code != 4010 && code != 4011 && !api.isStopped()) {
 			api.log("Trying to reconnect");
 			stop();
 			api.clear();

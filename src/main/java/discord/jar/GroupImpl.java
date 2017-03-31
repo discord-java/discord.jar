@@ -2,9 +2,6 @@ package discord.jar;
 
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class GroupImpl implements Group, Talkable {
     private String cid;
     private String id;
@@ -55,15 +52,6 @@ public class GroupImpl implements Group, Talkable {
         String a = pb.makeRequest();
         if (a != null) return new MessageImpl(message.getMessage(), new JSONObject(a).getString("id"), id, api);
         return message;
-    }
-
-    private JSONObject getLocalAuthor() {
-        JSONObject a = new JSONObject().put("username", api.getSelfInfo().getUsername()).put("discriminator", server.getGroupUserByUsername(api.getSelfInfo().getUsername()).getDiscriminator()).put("avatar", api.getSelfInfo().getAvatarId());
-        return a;
-    }
-
-    private String getTimestamp() {
-        return new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + "T" + new SimpleDateFormat("HH:mm:ss").format(new Date()) + ".135000+00:00";
     }
 
     private void updateId() {

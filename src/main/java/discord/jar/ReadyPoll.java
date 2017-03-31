@@ -30,8 +30,7 @@ public class ReadyPoll implements Poll {
 
         thread = new Thread(() ->
         {
-            while (!api.getRequestManager().getSocketClient().getConnection().isClosed()) {
-            	System.out.println("sending heartbeat");
+            while (api.getRequestManager().getSocketClient().getConnection().isOpen()) {
                 api.getRequestManager().getSocketClient().send(new JSONObject().put("op", 1).put("d", System
                         .currentTimeMillis()).toString());
                 try {

@@ -19,6 +19,7 @@ public class DiscordAPIImpl implements DiscordAPI {
 
     private final List<String> unavailableServers = Collections.synchronizedList(new ArrayList<>());
 	private boolean sendReady;
+	private boolean isStopped;
 
 	public void sendReady() {
 		this.sendReady = true;
@@ -88,6 +89,7 @@ public class DiscordAPIImpl implements DiscordAPI {
     }
 
     public void stop() {
+    	isStopped = true;
         log("Shutting down!");
         requestManager.getSocketClient().stop();
     }
@@ -199,5 +201,9 @@ public class DiscordAPIImpl implements DiscordAPI {
 		availableServers.clear();
 		availableServers.clear();
 		userGroups.clear();
+	}
+
+	public boolean isStopped() {
+		return isStopped;
 	}
 }
