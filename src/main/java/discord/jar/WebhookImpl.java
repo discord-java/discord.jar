@@ -76,11 +76,7 @@ public class WebhookImpl implements Webhook {
 
     @Override
     public void execute(String content, String username, String avatarUrl, boolean tts) {
-        PacketBuilder pb = new PacketBuilder(api);
-        pb.setType(RequestType.POST);
-        pb.setData(new JSONObject().put("content", content).put("username", username).put("avatar_url", avatarUrl).put("tts", tts).toString());
-        pb.setUrl("https://discordapp.com/api/webhooks/" + id + "/" + token);
-        pb.makeRequest();
+        execute(content, new Embed[0], username, avatarUrl, tts);
     }
 
     @Override
@@ -95,11 +91,15 @@ public class WebhookImpl implements Webhook {
 
     @Override
     public void execute(Embed[] embeds, String username, String avatarUrl) {
+        execute("", embeds, username, avatarUrl, false);
+    }
+
+    public void execute(String content, Embed[] embeds, String username, String avatarUrl, boolean tts) {
         PacketBuilder pb = new PacketBuilder(api);
         pb.setType(RequestType.POST);
         JSONArray jsonEmbeds = new JSONArray();
         for (Embed embed : embeds) jsonEmbeds.put(embed.toJson());
-        pb.setData(new JSONObject().put("embeds", jsonEmbeds).put("username", username).put("avatar_url", avatarUrl).toString());
+        pb.setData(new JSONObject().put("content", content).put("embeds", jsonEmbeds).put("username", username).put("avatar_url", avatarUrl).put("tts", tts).toString());
         pb.setUrl("https://discordapp.com/api/webhooks/" + id + "/" + token);
         System.out.println(pb.makeRequest());
     }

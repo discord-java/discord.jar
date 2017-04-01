@@ -28,4 +28,6 @@ public interface Webhook {
     void execute(Embed[] embeds, String username);
 
     void execute(Embed[] embeds, String username, String avatarUrl);
+
+    void execute(String content, Embed[] embeds, String username, String avatarUrl, boolean tts);
 }
