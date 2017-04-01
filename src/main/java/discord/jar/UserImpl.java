@@ -37,7 +37,7 @@ public class UserImpl implements User, Talkable {
         return ((a instanceof String) && ((a.equals(id)) || (a.equals(cid))));
     }
     
-        @Override
+    @Override
     public String mention() {
         return "<@!" + this.id + ">";
     }
