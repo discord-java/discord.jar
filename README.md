@@ -1,3 +1,5 @@
+<img align="right" src="https://images.discordapp.net/.eJwdyUEOhCAMAMC_8ACqAgv1Nw0SdKOW0Hoy_t3NXmduc_XdzGZVbTIDLJtk7osV5U612Mpc90JtE5v5AFKlvB7lVIEJAwY_-JCSHxyOMf0phunjUnQRf4fwpW7bWc3zAn-XIS8.GAnKML6JteYdVkafLF4yONWL8xU" height="256" width="256">
+
 # discord.jar
 
 The single best Discord API java wrapper
@@ -92,7 +94,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.github.discord-jar:discord.jar:master-VERSION"
+  compile "com.github.discord-java:discord.jar:master-VERSION"
 }
 ```
 # Dependencies
