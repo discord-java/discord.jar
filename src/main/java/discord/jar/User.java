@@ -10,6 +10,8 @@ public interface User {
     String getId();
 
     String getGame();
+    
+    String mention();
 
     OnlineStatus getOnlineStatus();
 }
