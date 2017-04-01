@@ -1,0 +1,36 @@
+package discord.jar;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.concurrent.ThreadLocalRandom;
+
+import org.json.JSONObject;
+
+public class randomMeme {
+	
+	private JSONObject get(String targetURL) throws IOException {
+		URL url = new URL(targetURL);
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(url.openStream()));
+
+		StringBuilder stringBuilder = new StringBuilder();
+
+		String inputLine;
+		while ((inputLine = bufferedReader.readLine()) != null) {
+			stringBuilder.append(inputLine);
+			stringBuilder.append(System.lineSeparator());
+		}
+
+		bufferedReader.close();
+		return new JSONObject(stringBuilder.toString().trim());
+	}
+
+	public String getRandomMemeURL() throws IOException {
+		JSONObject json = get("https://api.imgflip.com/get_memes");
+		int randomNum = ThreadLocalRandom.current().nextInt(0, json.getJSONObject("data").getJSONArray("memes").length() + 1);
+		return json.getJSONObject("data").getJSONArray("memes").getJSONObject(randomNum).getString("url");
+		
+	}
+	
+}
