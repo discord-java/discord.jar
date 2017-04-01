@@ -32,7 +32,7 @@ public class ServerImpl implements Server {
 
     @Override
     public Group getGroupById(String id) {
-        for (Group group : getGroups()) if (group.equals(id)) return group;
+        for (Group group : getGroups()) if (group.getId().equals(id)) return group;
         return null;
     }
 
