@@ -38,6 +38,9 @@ The single best Discord API java wrapper
 - UserOnlineStatusChangedEvent
 - UserDeletedMessageEvent
 - MentionEvent (1.3)
+- WebhookCreatedEvent
+- WebhookDeletedEvent
+- WebhookUpdatedEvent
 
 
 

@@ -1,5 +1,8 @@
 package discord.jar;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +16,14 @@ public class ServerImpl implements Server {
     private String server;
     private List<GroupUser> connectedClients = new ArrayList<>();
     private List<Group> groups = new ArrayList<>();
+    private List<Webhook> webhooks = new ArrayList<>();
     private DiscordAPIImpl api;
 
     public ServerImpl(String id, DiscordAPIImpl api) {
         this.api = api;
         this.id = id;
+
+        loadWebhooks();
     }
 
     public String toString() {
@@ -34,6 +40,54 @@ public class ServerImpl implements Server {
     public Group getGroupById(String id) {
         for (Group group : getGroups()) if (group.getId().equals(id)) return group;
         return null;
+    }
+
+    @Override
+    public Webhook getWebhookById(String id) {
+        for (Webhook webhook : getWebhooks()) if (webhook.getId().equals(id)) return webhook;
+        return null;
+    }
+
+    @Override
+    public Webhook getWebhookByName(String name) {
+        for (Webhook webhook : getWebhooks()) if (webhook.getName().equals(name)) return webhook;
+        return null;
+    }
+
+    @Override
+    public List<Webhook> getWebhooks() {
+        return webhooks;
+    }
+
+    @Override
+    public List<Webhook> getWebhooksForGroup(Group group) {
+        return getWebhooksForGroup(group.getId());
+    }
+
+    @Override
+    public List<Webhook> getWebhooksForGroup(String groupId) {
+        List<Webhook> groupWebhooks = new ArrayList<>();
+        for (Webhook webhook : getWebhooks()) if (webhook.getGroupId().equals(groupId)) groupWebhooks.add(webhook);
+        return groupWebhooks;
+    }
+
+    public void loadWebhooks() {
+        //Delegate to some form of rate limit handler once it's implemented
+        PacketBuilder pb = new PacketBuilder(api);
+        pb.setType(RequestType.GET);
+        pb.setUrl("https://discordapp.com/api/guilds/" + id + "/webhooks");
+        String a = pb.makeRequest();
+        if (a != null && pb.getCode() == 200) {
+            if (!a.contains("message")) {
+                JSONArray webhooks = new JSONArray(a);
+                for (Object obj : webhooks) {
+                    if (obj instanceof JSONObject) {
+                        JSONObject webhook = (JSONObject) obj;
+                        this.webhooks.add(new WebhookImpl(webhook.getString("name"), webhook.isNull("avatar") ? null : webhook.getString("avatar"), webhook.getString("token"), webhook.getString("id"), webhook.getString("channel_id"), api));
+                    }
+                }
+            }
+        }
     }
 
     @Override

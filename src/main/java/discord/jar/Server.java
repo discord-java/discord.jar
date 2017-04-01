@@ -31,4 +31,14 @@ public interface Server {
     void bc(String message);
 
     Group getGroupById(String id);
+
+    Webhook getWebhookById(String id);
+
+    Webhook getWebhookByName(String name);
+
+    List<Webhook> getWebhooks();
+
+    List<Webhook> getWebhooksForGroup(Group group);
+
+    List<Webhook> getWebhooksForGroup(String groupID);
 }

@@ -3,6 +3,8 @@ package discord.jar;
 import org.java_websocket.client.DefaultSSLWebSocketClientFactory;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONObject;
+
+import javax.net.ssl.SSLContext;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -10,7 +12,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
-import javax.net.ssl.SSLContext;
 
 public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
 
@@ -32,6 +33,7 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
     private Poll guildAddPoll;
     private Poll userUpdatePoll;
     private Poll deletePoll;
+    private Poll webhookPoll;
 
     public WebSocketClient(DiscordAPIImpl api, String url) {
         super(URI.create(url)); 
@@ -64,6 +66,7 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
         guildAddPoll = new GuildAdd(api);
         userUpdatePoll = new UserUpdatePoll(api);
         deletePoll = new DeleteMessagePoll(api);
+        webhookPoll = new WebhookUpdatePoll(api);
         this.connect();
     }
 
@@ -181,6 +184,9 @@ public class WebSocketClient extends org.java_websocket.client.WebSocketClient {
                     break;
                 case "GUILD_MEMBER_UPDATE":
                     deletePoll.process(key, obj, server);
+                    break;
+                case "WEBHOOKS_UPDATE":
+                    webhookPoll.process(key, obj, server);
                     break;
                 default:
                     api.log("Unknown type " + type + "\n >" + message);
