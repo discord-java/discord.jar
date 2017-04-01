@@ -31,7 +31,7 @@ public class NewContactOrGroupPoll implements Poll {
             GroupImpl group = new GroupImpl(content.getString("id"), content.getString("id"), server, api);
             group.setName(content.getString("name"));
             server.getGroups().add(group);
-            api.getEventManager().executeEvent(new ChannelDeletedEvent(group));
+            api.getEventManager().executeEvent(new ChannelCreatedEvent(group));
         }
     }
 }
