@@ -92,7 +92,7 @@ repositories {
 }
 
 dependencies {
-  compile "com.github.MinnDevelopment:discord.jar:master-VERSION"
+  compile "com.github.discord-jar:discord.jar:master-VERSION"
 }
 ```
 # Dependencies
