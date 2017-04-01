@@ -26,13 +26,28 @@ public class MessagePoll implements Poll {
             String msgContent = StringEscapeUtils.unescapeJson(content.getString("content"));
             String msgId = content.getString("id");
 
-            MessageImpl msg = new MessageImpl(msgContent, msgId, id, api);
+            String webhookId = content.has("webhook_id") ? !content.isNull("webhook_id") ? content.getString("webhook_id") : null : null;
+            if (webhookId != null && content.has("author")) {
+                JSONObject author = content.getJSONObject("author");
+                user = new UserImpl(author.getString("username"), webhookId, webhookId, api);
+                ((UserImpl) user).setAvatar(author.getString("avatar"));
+            }
+
+            MessageImpl msg = new MessageImpl(msgContent, msgId, id, webhookId, api);
             msg.setSender(user);
+
+            if (content.has("embed"))
+                msg.addEmbed(new Embed(content.getJSONObject("embed")));
+
+            if (content.has("embeds")) {
+                for (Object obj : content.getJSONArray("embeds"))
+                    msg.addEmbed(new Embed((JSONObject) obj));
+            }
 
             if (!content.isNull("edited_timestamp"))
                 msg.setEdited(true);
 
-            GroupUser gUser = (group.getServer() == null) ? new GroupUser(user, "User", user.getId()) : group
+            GroupUser gUser = (group.getServer() == null || webhookId != null) ? new GroupUser(user, "User", user.getId()) : group
                     .getServer().getGroupUserById(authorId);
 
             api.getEventManager().executeEvent(new UserChatEvent(group, gUser, msg));

@@ -2,6 +2,8 @@ package discord.jar;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class GroupImpl implements Group, Talkable {
     private String cid;
     private String id;
@@ -37,7 +39,7 @@ public class GroupImpl implements Group, Talkable {
 
     @Override
     public Message sendMessage(String message) {
-        return sendMessage(new MessageImpl(message, id, id, api));
+        return sendMessage(new MessageImpl(message, id, id, null, api));
     }
 
     @Override
@@ -47,11 +49,41 @@ public class GroupImpl implements Group, Talkable {
         message.setId(String.valueOf(System.currentTimeMillis()));
         PacketBuilder pb = new PacketBuilder(api);
         pb.setType(RequestType.POST);
-        pb.setData(new JSONObject().put("content", message.getMessage()).put("tts", false).toString());
+        pb.setData(new JSONObject().put("content", message.getMessage()).put("embed", message.getEmbeds().isEmpty() ? new JSONObject() : message.getEmbeds().get(0).toJson()).put("tts", false).toString());
         pb.setUrl("https://discordapp.com/api/channels/" + id + "/messages");
         String a = pb.makeRequest();
-        if (a != null) return new MessageImpl(message.getMessage(), new JSONObject(a).getString("id"), id, api);
+        if (a != null) return new MessageImpl(message.getMessage(), new JSONObject(a).getString("id"), id, null, api);
         return message;
+    }
+
+    public Webhook getWebhookById(String id) {
+        for (Webhook webhook : getWebhooks()) if (webhook.getId().equals(id)) return webhook;
+        return null;
+    }
+
+    @Override
+    public Webhook getWebhookByName(String name) {
+        for (Webhook webhook : getWebhooks()) if (webhook.getName().equals(name)) return webhook;
+        return null;
+    }
+
+    @Override
+    public Webhook createWebhook(String name, String avatar) {
+        PacketBuilder pb = new PacketBuilder(api);
+        pb.setType(RequestType.POST);
+        pb.setData(new JSONObject().put("name", name).put("avatar", avatar).toString());
+        pb.setUrl("https://discordapp.com/api/channels/" + id + "/webhooks");
+        String a = pb.makeRequest();
+        if (a != null) {
+            JSONObject response = new JSONObject(a);
+            return new WebhookImpl(response.getString("name"), response.isNull("avatar") ? null : response.getString("avatar"), response.getString("token"), response.getString("id"), response.getString("channel_id"), api);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Webhook> getWebhooks() {
+        return getServer().getWebhooksForGroup(id);
     }
 
     private void updateId() {

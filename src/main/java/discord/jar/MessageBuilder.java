@@ -7,6 +7,7 @@ public class MessageBuilder {
 
     private StringBuilder sb = new StringBuilder();
     private JSONArray mentions = new JSONArray();
+    private Embed embed = null;
 
     public MessageBuilder addString(String string) {
         sb.append(string);
@@ -35,13 +36,20 @@ public class MessageBuilder {
 
         sb = new StringBuilder(sb.toString().replace("@" + username, "<@" + gp.getUser().getId() + ">")); //
 
-        mentions.put(gp.getUser().getId().toString());
+        mentions.put(gp.getUser().getId());
+        return this;
+    }
+
+    public MessageBuilder withEmbed(Embed embed) {
+        this.embed = embed;
         return this;
     }
 
     public Message build() {
         MessageImpl message = new MessageImpl(sb.toString());
         message.setMentions(mentions);
+        if(embed != null)
+            message.addEmbed(embed);
         return message;
     }
 }

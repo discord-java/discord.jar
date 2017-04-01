@@ -1,6 +1,8 @@
 package discord.jar;
 
 
+import java.util.List;
+
 public interface Message {
     String getMessage();
 
@@ -19,4 +21,12 @@ public interface Message {
     void deleteMessage();
 
     void editMessage(String message);
+
+    List<Embed> getEmbeds();
+
+    void setEmbeds(List<Embed> embeds);
+
+    void addEmbed(Embed embed);
+
+    String getWebhookId();
 }
