@@ -36,6 +36,11 @@ public class UserImpl implements User, Talkable {
     public boolean equals(Object a) {
         return ((a instanceof String) && ((a.equals(id)) || (a.equals(cid))));
     }
+    
+        @Override
+    public String mention() {
+        return "<@!" + this.id + ">";
+    }
 
     public String getUsername() {
         return this.username;
