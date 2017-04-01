@@ -19,6 +19,9 @@ dependencies {
     compile ( 'com.mashape.unirest:unirest-java:1.4.9' ) {
         exclude group: 'junit', module: 'junit'
     }
+	
+	compile 'net.dv8tion:JDA:3.0.0'
+	compile 'com.github.austinv11:Discord4j:6f61e96'
 }
 
 project(':example') {
